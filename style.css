@@ -10,20 +10,20 @@ h1 {
 }
 
 button {
-  background-color: #F0A435;
-  color: #22301A;
-  padding: 15px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+    background-color: #F0A435;
+    color: #22301A;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 button:hover {
-  background-color: #B8692D;
+    background-color: #B8692D;
 }
 
 p {
-  font-size: 18px;
-  margin: 20px 0;
+    font-size: 18px;
+    margin: 20px 0;
 }
