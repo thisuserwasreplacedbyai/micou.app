@@ -1,0 +1,29 @@
+body {
+  background-color: #FDF8F0;
+  color: #22301A;
+  text-align: center;
+}
+
+h1 {
+  color: #F0A435;
+  font-size: 48px;
+}
+
+button {
+  background-color: #F0A435;
+  color: #22301A;
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #B8692D;
+}
+
+p {
+  font-size: 18px;
+  margin: 20px 0;
+}
