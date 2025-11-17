@@ -96,4 +96,16 @@ router.post('/logout', (req, res) => {
   res.json({ message: 'logged out successfully' });
 });
 
+// get current user (protected route)
+const authMiddleware = require('../middleware/auth');
+
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('-password');
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: 'server error', error: error.message });
+  }
+});
+
 module.exports = router;
