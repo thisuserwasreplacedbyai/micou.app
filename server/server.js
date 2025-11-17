@@ -19,7 +19,10 @@ app.use(cors({
 
 // routes
 const authRoutes = require('./routes/auth');
+const sessionRoutes = require('./routes/sessions');
+
 app.use('/api/auth', authRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'server is running' });
