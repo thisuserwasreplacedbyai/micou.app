@@ -1,35 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import './styles/main.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+// protected route wrapper
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  if (loading) {
+    return (
+      <div style={{ 
+        minHeight: '100vh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}>
+        <p>loading...</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    );
+  }
+
+  return user ? children : <Navigate to="/login" />;
 }
 
-export default App
+// app routes
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<div style={{ padding: '40px', textAlign: 'center' }}><h1>landing page</h1></div>} />
+      <Route path="/signup" element={<div style={{ padding: '40px', textAlign: 'center' }}><h1>signup page</h1></div>} />
+      <Route path="/login" element={<div style={{ padding: '40px', textAlign: 'center' }}><h1>login page</h1></div>} />
+      
+      <Route 
+        path="/timer" 
+        element={
+          <ProtectedRoute>
+            <div style={{ padding: '40px', textAlign: 'center' }}>
+              <h1>timer page</h1>
+              <p>protected route - only logged in users see this</p>
+            </div>
+          </ProtectedRoute>
+        } 
+      />
+      
+      <Route 
+        path="/profile" 
+        element={
+          <ProtectedRoute>
+            <div style={{ padding: '40px', textAlign: 'center' }}>
+              <h1>profile page</h1>
+            </div>
+          </ProtectedRoute>
+        } 
+      />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </Router>
+  );
+}
+
+export default App;
