@@ -17,6 +17,10 @@ app.use(cors({
   credentials: true
 }));
 
+// routes
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'server is running' });
 });
