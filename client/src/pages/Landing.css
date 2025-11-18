@@ -1,0 +1,155 @@
+.landing-page {
+  min-height: 100vh;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, var(--background) 0%, var(--surface) 100%);
+  padding: 120px 40px;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 64px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  color: var(--forest);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.hero-description {
+  font-size: 18px;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.hero-cta {
+  padding: 18px 48px;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(240, 164, 53, 0.3);
+}
+
+.features-section {
+  padding: 100px 40px;
+  background: white;
+}
+
+.features-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 60px;
+}
+
+.feature-card {
+  text-align: center;
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--surface);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+.feature-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.feature-description {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.vision-section {
+  padding: 100px 40px;
+  background: linear-gradient(135deg, var(--forest) 0%, var(--text) 100%);
+  color: white;
+}
+
+.vision-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.vision-text h2 {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.vision-text p {
+  font-size: 18px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.vision-cta {
+  padding: 16px 40px;
+  font-size: 16px;
+}
+
+.vision-image {
+  height: 400px;
+  background: rgba(253, 248, 240, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-text {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .hero-section {
+    padding: 80px 20px;
+  }
+
+  .features-section,
+  .vision-section {
+    padding: 60px 20px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .vision-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .vision-text h2 {
+    font-size: 32px;
+  }
+}
