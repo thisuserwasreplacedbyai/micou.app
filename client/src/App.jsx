@@ -2,8 +2,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import './styles/main.css';
 import Landing from './pages/Landing';
+import Timer from './pages/Timer';
+import './styles/main.css';
 
 // protected route wrapper
 function ProtectedRoute({ children }) {
@@ -37,10 +38,7 @@ function AppRoutes() {
         path="/timer" 
         element={
           <ProtectedRoute>
-            <div style={{ padding: '40px', textAlign: 'center' }}>
-              <h1>timer page</h1>
-              <p>you're logged in!</p>
-            </div>
+            <Timer />
           </ProtectedRoute>
         } 
       />
