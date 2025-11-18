@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Timer.css';
+import { createSession } from '../services/sessionService';
 
 function Timer() {
   const [selectedActivity, setSelectedActivity] = useState('');
@@ -54,18 +55,23 @@ function Timer() {
     setIsTimerStarted(true);
   };
 
-  const handleStop = () => {
-    // calculate duration in minutes
-    const durationMinutes = Math.floor(elapsedSeconds / 60);
-    
-    console.log('session completed:', {
+const handleStop = async () => {
+  // calculate duration in minutes
+  const durationMinutes = Math.floor(elapsedSeconds / 60);
+  const endTime = new Date();
+  
+  try {
+    // save session to database
+    await createSession({
       activity: selectedActivity,
-      startTime: startTime,
-      endTime: new Date(),
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
       duration: durationMinutes,
-      elapsedSeconds: elapsedSeconds
+      notes: ''
     });
-
+    
+    console.log('session saved to database');
+    
     // reset everything
     setIsTimerStarted(false);
     setSelectedActivity('');
@@ -73,7 +79,11 @@ function Timer() {
     setElapsedSeconds(0);
     
     alert(`session saved! ${durationMinutes} minutes of ${selectedActivity}`);
-  };
+  } catch (error) {
+    console.error('failed to save session:', error);
+    alert('failed to save session. please try again.');
+  }
+};
 
   return (
     <div className="timer-page">
