@@ -4,6 +4,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
 import Timer from './pages/Timer';
+import Navbar from './components/Navbar';
 import './styles/main.css';
 
 // protected route wrapper
@@ -29,31 +30,35 @@ function ProtectedRoute({ children }) {
 // app routes
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      
-      <Route 
-        path="/timer" 
-        element={
-          <ProtectedRoute>
-            <Timer />
-          </ProtectedRoute>
-        } 
-      />
-      
-      <Route 
-        path="/profile" 
-        element={
-          <ProtectedRoute>
-            <div style={{ padding: '40px', textAlign: 'center' }}>
-              <h1>profile page</h1>
-            </div>
-          </ProtectedRoute>
-        } 
-      />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        
+        <Route 
+          path="/timer" 
+          element={
+            <ProtectedRoute>
+              <Timer />
+            </ProtectedRoute>
+          } 
+        />
+        
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <div style={{ padding: '40px', textAlign: 'center' }}>
+                <h1>profile page</h1>
+                <p>coming soon</p>
+              </div>
+            </ProtectedRoute>
+          } 
+        />
+      </Routes>
+    </>
   );
 }
 
