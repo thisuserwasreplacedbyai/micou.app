@@ -1,3 +1,4 @@
+// session routes - crud operations for user sessions
 const express = require('express');
 const Session = require('../models/Session');
 const authMiddleware = require('../middleware/auth');
@@ -35,7 +36,7 @@ router.get('/', async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(50);
     
-    res.json({ sessions });
+    res.json(sessions);
   } catch (error) {
     res.status(500).json({ message: 'server error', error: error.message });
   }

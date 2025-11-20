@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Landing from './pages/Landing';
 import Timer from './pages/Timer';
 import Navbar from './components/Navbar';
+import Profile from './pages/Profile';
 import './styles/main.css';
 
 // protected route wrapper
@@ -50,10 +51,7 @@ function AppRoutes() {
           path="/profile" 
           element={
             <ProtectedRoute>
-              <div style={{ padding: '40px', textAlign: 'center' }}>
-                <h1>profile page</h1>
-                <p>coming soon</p>
-              </div>
+              <Profile />
             </ProtectedRoute>
           } 
         />

@@ -21,9 +21,7 @@ function Navbar() {
             <Link to="/timer" className="nav-link">
               start session
             </Link>
-            <Link to="/profile" className="nav-link">
-              profile
-            </Link>
+            <Link to="/profile" className="avatar-icon">👤</Link>
             <button onClick={handleLogout} className="btn-secondary nav-button">
               logout
             </button>
