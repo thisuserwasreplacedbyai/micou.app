@@ -1,0 +1,161 @@
+/* modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+/* modal content box */
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-title {
+  font-size: 24px;
+  color: var(--text);
+  margin: 0 0 20px 0;
+  font-weight: 600;
+}
+
+.modal-body {
+  color: var(--text);
+}
+
+/* modal buttons */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+.modal-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-btn-primary {
+  background: var(--golden);
+  color: white;
+}
+
+.modal-btn-primary:hover {
+  background: var(--accent);
+}
+
+.modal-btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.modal-btn-secondary:hover {
+  background: #e5dfd5;
+}
+
+.modal-btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+.modal-btn-danger:hover {
+  background: #c82333;
+}
+
+/* session complete modal styles */
+.session-complete-content {
+  padding: 8px 0;
+}
+
+.session-duration {
+  font-size: 18px;
+  color: var(--text);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.session-duration strong {
+  color: var(--golden);
+  font-size: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--surface);
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--text);
+  background: white;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--golden);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--surface);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text);
+  background: white;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--golden);
+}
+
+.form-textarea::placeholder {
+  color: #999;
+}

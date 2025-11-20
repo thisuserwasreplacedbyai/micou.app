@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Timer.css';
 import { createSession } from '../services/sessionService';
+import SessionCompleteModal from '../components/SessionCompleteModal';
 
 function Timer() {
   const [selectedActivity, setSelectedActivity] = useState('');
@@ -9,6 +10,7 @@ function Timer() {
   const [startTime, setStartTime] = useState(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [notes, setNotes] = useState('');
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
 
   const activities = [
     { value: 'work', label: 'work', emoji: '💼' },
@@ -64,32 +66,34 @@ function Timer() {
     setIsPaused(false);
   };
 
-  const handleStop = async () => {
-    // calculate duration in minutes
+  const handleStop = () => {
+    // show the modal instead of saving immediately
+    setShowCompleteModal(true);
+  };
+
+  const handleSaveSession = async ({ activity, notes: finalNotes }) => {
     const durationMinutes = Math.floor(elapsedSeconds / 60);
     const endTime = new Date();
     
     try {
-      // save session to database
       await createSession({
-        activity: selectedActivity,
+        activity: activity,
         startTime: startTime.toISOString(),
         endTime: endTime.toISOString(),
         duration: durationMinutes,
-        notes: notes
+        notes: finalNotes
       });
       
       console.log('session saved to database');
       
-      // reset everything
+      // close modal and reset everything
+      setShowCompleteModal(false);
       setIsTimerStarted(false);
       setIsPaused(false);
       setSelectedActivity('');
       setStartTime(null);
       setElapsedSeconds(0);
       setNotes('');
-      
-      alert(`session saved! ${durationMinutes} minutes of ${selectedActivity}`);
     } catch (error) {
       console.error('failed to save session:', error);
       alert('failed to save session. please try again.');
@@ -97,70 +101,81 @@ function Timer() {
   };
 
   return (
-    <div className="timer-page">
-      {!isTimerStarted ? (
-        <div className="activity-selector">
-          <h1>what are you working on?</h1>
-          <div className="activities-grid">
-            {activities.map((activity) => (
-              <button
-                key={activity.value}
-                className={`activity-button ${selectedActivity === activity.value ? 'selected' : ''}`}
-                onClick={() => handleActivitySelect(activity.value)}
-              >
-                <span className="activity-emoji">{activity.emoji}</span>
-                <span className="activity-label">{activity.label}</span>
-              </button>
-            ))}
+    <>
+      <div className="timer-page">
+        {!isTimerStarted ? (
+          <div className="activity-selector">
+            <h1>what are you working on?</h1>
+            <div className="activities-grid">
+              {activities.map((activity) => (
+                <button
+                  key={activity.value}
+                  className={`activity-button ${selectedActivity === activity.value ? 'selected' : ''}`}
+                  onClick={() => handleActivitySelect(activity.value)}
+                >
+                  <span className="activity-emoji">{activity.emoji}</span>
+                  <span className="activity-label">{activity.label}</span>
+                </button>
+              ))}
+            </div>
+            <button 
+              className="btn-primary start-button" 
+              onClick={handleStart}
+              disabled={!selectedActivity}
+            >
+              start session
+            </button>
           </div>
-          <button 
-            className="btn-primary start-button" 
-            onClick={handleStart}
-            disabled={!selectedActivity}
-          >
-            start session
-          </button>
-        </div>
-      ) : (
-        <div className="timer-active">
-          <div className="timer-overlay">
-            <div className="timer-activity">
-              <span className="activity-label-active">
-                {activities.find(a => a.value === selectedActivity)?.emoji} {selectedActivity}
-              </span>
-              {isPaused && <span className="pause-indicator"> (paused)</span>}
-            </div>
-            <div className="timer-display">{formatTime(elapsedSeconds)}</div>
-            
-            {/* notes field */}
-            <div className="timer-notes">
-              <textarea
-                placeholder="notes..."
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows="3"
-                maxLength="500"
-              />
-            </div>
+        ) : (
+          <div className="timer-active">
+            <div className="timer-overlay">
+              <div className="timer-activity">
+                <span className="activity-label-active">
+                  {activities.find(a => a.value === selectedActivity)?.emoji} {selectedActivity}
+                </span>
+                {isPaused && <span className="pause-indicator"> (paused)</span>}
+              </div>
+              <div className="timer-display">{formatTime(elapsedSeconds)}</div>
+              
+              {/* notes field */}
+              <div className="timer-notes">
+                <textarea
+                  placeholder="add notes about this session... (optional)"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows="3"
+                  maxLength="500"
+                />
+              </div>
 
-            <div className="timer-controls">
-              {!isPaused ? (
-                <button className="btn-secondary" onClick={handlePause}>
-                  pause
+              <div className="timer-controls">
+                {!isPaused ? (
+                  <button className="btn-secondary" onClick={handlePause}>
+                    pause
+                  </button>
+                ) : (
+                  <button className="btn-secondary" onClick={handleResume}>
+                    resume
+                  </button>
+                )}
+                <button className="btn-primary" onClick={handleStop}>
+                  finish session
                 </button>
-              ) : (
-                <button className="btn-secondary" onClick={handleResume}>
-                  resume
-                </button>
-              )}
-              <button className="btn-primary" onClick={handleStop}>
-                finish session
-              </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+
+      <SessionCompleteModal
+        isOpen={showCompleteModal}
+        onClose={() => setShowCompleteModal(false)}
+        onSave={handleSaveSession}
+        initialActivity={selectedActivity}
+        initialNotes={notes}
+        duration={Math.floor(elapsedSeconds / 60)}
+      />
+    </>
   );
 }
 
