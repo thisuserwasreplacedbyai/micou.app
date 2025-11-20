@@ -1,10 +1,10 @@
 // save completed sessions to mongodb
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/sessions';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export const createSession = async (sessionData) => {
-  const response = await axios.post(API_URL, sessionData, {
+  const response = await axios.post(`${API_URL}/api/sessions`, sessionData, {
     withCredentials: true
   });
   return response.data;
@@ -12,7 +12,7 @@ export const createSession = async (sessionData) => {
 
 // get all user sessions
 export const getAllSessions = async () => {
-  const response = await axios.get('http://localhost:5000/api/sessions', {
+  const response = await axios.get(`${API_URL}/api/sessions`, {
     withCredentials: true
   });
   return response.data;
@@ -20,7 +20,7 @@ export const getAllSessions = async () => {
 
 // delete a session
 export const deleteSession = async (sessionId) => {
-  const response = await axios.delete(`http://localhost:5000/api/sessions/${sessionId}`, {
+  const response = await axios.delete(`${API_URL}/api/sessions/${sessionId}`, {
     withCredentials: true
   });
   return response.data;
@@ -28,7 +28,7 @@ export const deleteSession = async (sessionId) => {
 
 // get week stats
 export const getWeekStats = async () => {
-  const response = await axios.get('http://localhost:5000/api/stats/week', {
+  const response = await axios.get(`${API_URL}/api/stats/week`, {
     withCredentials: true
   });
   return response.data;
@@ -36,7 +36,7 @@ export const getWeekStats = async () => {
 
 // get alltime stats
 export const getAllTimeStats = async () => {
-  const response = await axios.get('http://localhost:5000/api/stats/alltime', {
+  const response = await axios.get(`${API_URL}/api/stats/alltime`, {
     withCredentials: true
   });
   return response.data;
@@ -44,7 +44,7 @@ export const getAllTimeStats = async () => {
 
 // get streak
 export const getStreak = async () => {
-  const response = await axios.get('http://localhost:5000/api/stats/streak', {
+  const response = await axios.get(`${API_URL}/api/stats/streak`, {
     withCredentials: true
   });
   return response.data;
