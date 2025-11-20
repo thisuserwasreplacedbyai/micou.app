@@ -1,8 +1,16 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-
 const router = express.Router();
+
+// helper function for cookie options
+const getCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production', // true in production (https only)
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' allows cross-domain
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  domain: process.env.NODE_ENV === 'production' ? '.micou.app' : undefined // shares cookie across subdomains
+});
 
 // signup
 router.post('/signup', async (req, res) => {
@@ -27,12 +35,7 @@ router.post('/signup', async (req, res) => {
     );
     
     // set cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('token', token, getCookieOptions());
     
     res.status(201).json({
       message: 'user created successfully',
@@ -71,12 +74,7 @@ router.post('/login', async (req, res) => {
     );
     
     // set cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('token', token, getCookieOptions());
     
     res.json({
       message: 'logged in successfully',
@@ -92,13 +90,12 @@ router.post('/login', async (req, res) => {
 
 // logout
 router.post('/logout', (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token', getCookieOptions());
   res.json({ message: 'logged out successfully' });
 });
 
 // get current user (protected route)
 const authMiddleware = require('../middleware/auth');
-
 router.get('/me', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId).select('-password');

@@ -19,7 +19,7 @@ app.use(cors({
     ? [
         'https://micou.app', 
         'https://www.micou.app',
-        process.env.FRONTEND_URL  // netlify url
+        'https://micou.netlify.app'
       ]
     : 'http://localhost:5173',
   credentials: true
