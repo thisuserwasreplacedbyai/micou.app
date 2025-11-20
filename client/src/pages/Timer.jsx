@@ -5,8 +5,10 @@ import { createSession } from '../services/sessionService';
 function Timer() {
   const [selectedActivity, setSelectedActivity] = useState('');
   const [isTimerStarted, setIsTimerStarted] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [notes, setNotes] = useState('');
 
   const activities = [
     { value: 'work', label: 'work', emoji: '💼' },
@@ -20,18 +22,16 @@ function Timer() {
   useEffect(() => {
     let interval = null;
     
-    if (isTimerStarted && startTime) {
+    if (isTimerStarted && !isPaused) {
       interval = setInterval(() => {
-        const now = new Date();
-        const elapsed = Math.floor((now - startTime) / 1000);
-        setElapsedSeconds(elapsed);
+        setElapsedSeconds(prev => prev + 1);
       }, 1000);
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isTimerStarted, startTime]);
+  }, [isTimerStarted, isPaused]);
 
   // format seconds into HH:MM:SS
   const formatTime = (totalSeconds) => {
@@ -53,37 +53,48 @@ function Timer() {
     }
     setStartTime(new Date());
     setIsTimerStarted(true);
+    setIsPaused(false);
   };
 
-const handleStop = async () => {
-  // calculate duration in minutes
-  const durationMinutes = Math.floor(elapsedSeconds / 60);
-  const endTime = new Date();
-  
-  try {
-    // save session to database
-    await createSession({
-      activity: selectedActivity,
-      startTime: startTime.toISOString(),
-      endTime: endTime.toISOString(),
-      duration: durationMinutes,
-      notes: ''
-    });
+  const handlePause = () => {
+    setIsPaused(true);
+  };
+
+  const handleResume = () => {
+    setIsPaused(false);
+  };
+
+  const handleStop = async () => {
+    // calculate duration in minutes
+    const durationMinutes = Math.floor(elapsedSeconds / 60);
+    const endTime = new Date();
     
-    console.log('session saved to database');
-    
-    // reset everything
-    setIsTimerStarted(false);
-    setSelectedActivity('');
-    setStartTime(null);
-    setElapsedSeconds(0);
-    
-    alert(`session saved! ${durationMinutes} minutes of ${selectedActivity}`);
-  } catch (error) {
-    console.error('failed to save session:', error);
-    alert('failed to save session. please try again.');
-  }
-};
+    try {
+      // save session to database
+      await createSession({
+        activity: selectedActivity,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        duration: durationMinutes,
+        notes: notes
+      });
+      
+      console.log('session saved to database');
+      
+      // reset everything
+      setIsTimerStarted(false);
+      setIsPaused(false);
+      setSelectedActivity('');
+      setStartTime(null);
+      setElapsedSeconds(0);
+      setNotes('');
+      
+      alert(`session saved! ${durationMinutes} minutes of ${selectedActivity}`);
+    } catch (error) {
+      console.error('failed to save session:', error);
+      alert('failed to save session. please try again.');
+    }
+  };
 
   return (
     <div className="timer-page">
@@ -117,9 +128,31 @@ const handleStop = async () => {
               <span className="activity-label-active">
                 {activities.find(a => a.value === selectedActivity)?.emoji} {selectedActivity}
               </span>
+              {isPaused && <span className="pause-indicator"> (paused)</span>}
             </div>
             <div className="timer-display">{formatTime(elapsedSeconds)}</div>
+            
+            {/* notes field */}
+            <div className="timer-notes">
+              <textarea
+                placeholder="notes..."
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows="3"
+                maxLength="500"
+              />
+            </div>
+
             <div className="timer-controls">
+              {!isPaused ? (
+                <button className="btn-secondary" onClick={handlePause}>
+                  pause
+                </button>
+              ) : (
+                <button className="btn-secondary" onClick={handleResume}>
+                  resume
+                </button>
+              )}
               <button className="btn-primary" onClick={handleStop}>
                 finish session
               </button>

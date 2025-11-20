@@ -130,3 +130,60 @@
     padding: 32px 24px;
   }
 }
+
+/* pause indicator */
+.pause-indicator {
+  color: var(--accent);
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* notes field */
+.timer-notes {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.timer-notes textarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--surface);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: white;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.timer-notes textarea:focus {
+  outline: none;
+  border-color: var(--golden);
+}
+
+.timer-notes textarea::placeholder {
+  color: #999;
+}
+
+/* timer controls */
+.timer-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-secondary {
+  padding: 12px 24px;
+  background: var(--surface);
+  color: var(--text);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #e5dfd5;
+}
