@@ -16,7 +16,11 @@ app.use(cookieParser());
 // cors setup - allows both local and production
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://micou.app', 'https://www.micou.app']
+    ? [
+        'https://micou.app', 
+        'https://www.micou.app',
+        process.env.FRONTEND_URL  // netlify url
+      ]
     : 'http://localhost:5173',
   credentials: true
 }));
