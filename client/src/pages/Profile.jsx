@@ -1,6 +1,7 @@
 // profile page - shows user stats and session history
 import { useState, useEffect } from 'react';
 import { getAllSessions, deleteSession, getWeekStats, getAllTimeStats, getStreak } from '../services/sessionService';
+import ConfirmModal from '../components/ConfirmModal';
 import './Profile.css';
 
 function Profile() {
@@ -9,8 +10,10 @@ function Profile() {
   const [allTimeStats, setAllTimeStats] = useState({});
   const [streak, setStreak] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [sessionToDelete, setSessionToDelete] = useState(null);
 
-  // fetch all data
+  // fetch all data on mount
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -35,13 +38,17 @@ function Profile() {
     }
   };
 
-  const handleDelete = async (sessionId) => {
-    if (!window.confirm('delete this session?')) return;
+  const handleDeleteClick = (sessionId) => {
+    setSessionToDelete(sessionId);
+    setDeleteModalOpen(true);
+  };
 
+  const handleDeleteConfirm = async () => {
     try {
-      await deleteSession(sessionId);
+      await deleteSession(sessionToDelete);
       // refresh all data after deletion
       fetchAllData();
+      setSessionToDelete(null);
     } catch (error) {
       console.error('error deleting session:', error);
     }
@@ -141,7 +148,7 @@ function Profile() {
                 )}
                 <button 
                   className="delete-btn"
-                  onClick={() => handleDelete(session._id)}
+                  onClick={() => handleDeleteClick(session._id)}
                 >
                   🗑️
                 </button>
@@ -150,6 +157,17 @@ function Profile() {
           </div>
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title="delete session?"
+        message="are you sure you want to delete this session? this action cannot be undone."
+        confirmText="delete"
+        cancelText="cancel"
+        isDanger={true}
+      />
     </div>
   );
 }

@@ -159,3 +159,15 @@
 .form-textarea::placeholder {
   color: #999;
 }
+
+/* confirm modal styles */
+.confirm-modal-content {
+  padding: 8px 0;
+}
+
+.confirm-message {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
