@@ -88,7 +88,7 @@ runs on http://localhost:5173
 - shows weekly vs all-time totals
 
 ## file structure
-
+```bash
 server/
   ├── models/          # user and session schemas
   ├── routes/          # auth, sessions, stats endpoints
@@ -102,7 +102,7 @@ client/
   │   ├── contexts/    # auth and timer contexts
   │   └── services/    # api calls
   └── public/          # favicon, assets
-
+```
 
 ## features i implemented
 
