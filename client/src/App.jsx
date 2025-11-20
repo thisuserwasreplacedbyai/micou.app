@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { TimerProvider } from './contexts/TimerContext';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
@@ -64,7 +65,9 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppRoutes />
+        <TimerProvider>
+          <AppRoutes />
+        </TimerProvider>
       </AuthProvider>
     </Router>
   );

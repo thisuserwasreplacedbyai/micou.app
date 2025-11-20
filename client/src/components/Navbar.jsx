@@ -19,7 +19,7 @@ function Navbar() {
         {user ? (
           <>
             <Link to="/timer" className="nav-link">
-              start session
+              session
             </Link>
             <Link to="/profile" className="avatar-icon">👤</Link>
             <button onClick={handleLogout} className="btn-secondary nav-button">

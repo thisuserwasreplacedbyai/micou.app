@@ -1,16 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Timer.css';
 import { createSession } from '../services/sessionService';
 import SessionCompleteModal from '../components/SessionCompleteModal';
+import { useTimer } from '../contexts/TimerContext';
 
 function Timer() {
-  const [selectedActivity, setSelectedActivity] = useState('');
-  const [isTimerStarted, setIsTimerStarted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [startTime, setStartTime] = useState(null);
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [notes, setNotes] = useState('');
   const [showCompleteModal, setShowCompleteModal] = useState(false);
+  
+  // get timer state and actions from context
+  const {
+    selectedActivity,
+    isTimerStarted,
+    isPaused,
+    startTime,
+    elapsedSeconds,
+    notes,
+    setSelectedActivity,
+    setNotes,
+    startTimer,
+    pauseTimer,
+    resumeTimer,
+    stopTimer,
+    resetTimer
+  } = useTimer();
 
   const activities = [
     { value: 'work', label: 'work', emoji: '💼' },
@@ -19,21 +31,6 @@ function Timer() {
     { value: 'code', label: 'code', emoji: '💻' },
     { value: 'write', label: 'write', emoji: '✍️' }
   ];
-
-  // timer counting logic
-  useEffect(() => {
-    let interval = null;
-    
-    if (isTimerStarted && !isPaused) {
-      interval = setInterval(() => {
-        setElapsedSeconds(prev => prev + 1);
-      }, 1000);
-    }
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isTimerStarted, isPaused]);
 
   // format seconds into HH:MM:SS
   const formatTime = (totalSeconds) => {
@@ -50,30 +47,26 @@ function Timer() {
 
   const handleStart = () => {
     if (!selectedActivity) {
-      alert('please select an activity first');
       return;
     }
-    setStartTime(new Date());
-    setIsTimerStarted(true);
-    setIsPaused(false);
+    startTimer(selectedActivity);
   };
 
   const handlePause = () => {
-    setIsPaused(true);
+    pauseTimer();
   };
 
   const handleResume = () => {
-    setIsPaused(false);
+    resumeTimer();
   };
 
   const handleStop = () => {
-    // show the modal instead of saving immediately
     setShowCompleteModal(true);
   };
 
   const handleSaveSession = async ({ activity, notes: finalNotes }) => {
-    const durationMinutes = Math.floor(elapsedSeconds / 60);
     const endTime = new Date();
+    const durationMinutes = Math.floor(elapsedSeconds / 60);
     
     try {
       await createSession({
@@ -86,14 +79,9 @@ function Timer() {
       
       console.log('session saved to database');
       
-      // close modal and reset everything
+      // close modal and reset timer
       setShowCompleteModal(false);
-      setIsTimerStarted(false);
-      setIsPaused(false);
-      setSelectedActivity('');
-      setStartTime(null);
-      setElapsedSeconds(0);
-      setNotes('');
+      resetTimer();
     } catch (error) {
       console.error('failed to save session:', error);
       alert('failed to save session. please try again.');
