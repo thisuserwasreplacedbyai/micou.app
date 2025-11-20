@@ -12,8 +12,12 @@ connectDB();
 // middleware
 app.use(express.json());
 app.use(cookieParser());
+
+// cors setup - allows both local and production
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://micou.app', 'https://www.micou.app']
+    : 'http://localhost:5173',
   credentials: true
 }));
 
@@ -26,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/stats', statsRoutes);
 
+// health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'server is running' });
 });
