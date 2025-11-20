@@ -1,3 +1,4 @@
+/* navbar styles */
 .navbar {
   background: white;
   border-bottom: 1px solid #e0e0e0;
@@ -27,20 +28,24 @@
   align-items: center;
 }
 
+/* nav link styling for session and profile */
 .nav-link {
+  padding: 10px 20px;
   color: var(--text);
   text-decoration: none;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  border: 2px solid rgba(240, 164, 53, 0.3);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s;
+  font-size: 16px;
 }
 
 .nav-link:hover {
-  background: var(--surface);
-  color: var(--golden);
+  background: rgba(240, 164, 53, 0.1);
+  border-color: rgba(240, 164, 53, 0.6);
 }
 
+/* nav button styling for login/signup/logout */
 .nav-button {
   padding: 10px 24px;
   border-radius: 6px;
@@ -48,6 +53,8 @@
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-secondary {
@@ -59,33 +66,23 @@
   background-color: #e5dfd5;
 }
 
+/* responsive */
 @media (max-width: 768px) {
   .navbar {
     padding: 16px 20px;
   }
-
+  
+  .navbar-right {
+    gap: 12px;
+  }
+  
   .nav-button {
     padding: 8px 16px;
     font-size: 13px;
   }
-
+  
   .nav-link {
-    display: none;
+    padding: 8px 12px;
+    font-size: 14px;
   }
-}
-
-/* nav link styling */
-.nav-link {
-  padding: 10px 20px;
-  color: var(--text);
-  text-decoration: none;
-  border: 2px solid rgba(240, 164, 53, 0.3);
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.nav-link:hover {
-  background: rgba(240, 164, 53, 0.1);
-  border-color: rgba(240, 164, 53, 0.6);
 }

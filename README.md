@@ -1,59 +1,132 @@
-# micou.app
+# micou - habit tracker app
 
-**make it count, one day at a time**
+**live site:** https://micou.app
 
-a simple habit tracker that helps you fight imposter syndrome by showing you concrete proof of the work you've actually done.
+a simple habit tracker i built to help fight imposter syndrome by showing concrete proof of work accomplished. tracks focused work sessions and displays stats to show you're actually making progress.
 
-## what is micou?
+## what it does
 
-micou is a session tracker for your focused work. whether you're studying, coding, writing, reading, or working on projects, micou helps you:
+micou lets you track work sessions across 5 activity types (work, study, read, code, write). you can:
 
-- **track your sessions** - time anything you want
-- **see your progress** - view streaks, stats, and breakdowns of where your time actually goes
-- **build proof** - hard evidence against that voice saying "you're not doing enough"
+- start/pause/resume a timer
+- add notes to sessions
+- view your streak and stats
+- see weekly and all-time breakdowns
+- edit or delete past sessions
 
-named after the mico-leão-dourado (golden lion tamarin), one of the world's most endangered primates, micou believes that small, consistent actions create meaningful change.
+the timer keeps running even if you switch pages, and there's a pop-up at the end of each session to adjust details before saving.
 
-## features
+## why i built this
 
-- **5 activity types:** work, study, read, code, write
-- **simple timer:** no complicated setup, just pick an activity and start
-- **session notes:** add context to what you accomplished
-- **session editing:** adjust time if you forgot to stop the timer
-- **streak tracking:** see how many days you've hit your goals
-- **visual stats:** breakdown by activity, heatmaps, weekly vs all-time totals
+named after the golden lion tamarin (mico-leão-dourado) and "Make It COUnt" an endangered species. the idea is that small consistent actions add up over time if this passion project ever gets profitable I'll donate the money to conservation efforts in Brasil.
 
-## getting started
+## tech stack
 
-### create an account
+**frontend:**
+- react (with vite)
+- react router for navigation
+- context api for auth and timer state
+- custom css
 
-1. visit micou.app
-2. click "start making it count"
-3. sign up with your email
+**backend:**
+- node.js + express
+- mongodb with mongoose
+- JWT authentication (httpOnly cookies)
+- bcrypt for passwords
 
-### track your first session
+**deployed on:**
+- netlify (frontend)
+- render (backend)
+- mongodb atlas (database)
 
-1. click "start session"
-2. pick your activity (work, study, read, code, or write)
-3. start the timer
-4. do your work
-5. stop when you're done
-6. optionally adjust time and add notes
+## running it locally
 
-### view your progress
+### backend
+```bash
+cd server
+npm install
 
-- visit your profile to see stats and session history
-- check your current streak
-- see overall stats
+# create .env with:
+# MONGODB_URI=your_connection_string
+# JWT_SECRET=some_random_string
+# NODE_ENV=development
 
-## why micou?
+npm run dev
+```
 
-because sometimes you need proof that you're actually making progress. micou gives you that proof.
+runs on http://localhost:5000
 
-small, consistent sessions add up. every minute counts.
+### frontend
+```bash
+cd client
+npm install
 
-## tech
+# create .env with:
+# VITE_API_URL=http://localhost:5000
 
-built with MongoDB, Express, React and Node.js
+npm run dev
+```
+
+runs on http://localhost:5173
+
+## how it works
+
+**authentication:**
+- signup/login with email + password
+- JWT tokens stored in httpOnly cookies
+- protected routes redirect to login if not authenticated
+
+**timer:**
+- uses context api so state persists across pages
+- pause/resume functionality
+- notes field during session
+- post-session modal for editing activity/notes
+
+**stats:**
+- calculates streak (consecutive days with sessions)
+- breaks down time by activity type
+- shows weekly vs all-time totals
+
+## file structure
+
+server/
+  ├── models/          # user and session schemas
+  ├── routes/          # auth, sessions, stats endpoints
+  ├── middleware/      # JWT verification
+  └── config/          # mongodb connection
+
+client/
+  ├── src/
+  │   ├── components/  # navbar, modals
+  │   ├── pages/       # landing, timer, profile, etc
+  │   ├── contexts/    # auth and timer contexts
+  │   └── services/    # api calls
+  └── public/          # favicon, assets
+
+
+## features i implemented
+
+- timer with pause/resume
+- timer persists when navigating between pages
+- custom styled modals (no ugly browser alerts)
+- streak calculation
+- session CRUD operations
+- stats breakdowns (week/all-time)
+- custom domain setup
+- responsive design (mostly desktop focused for now)
+
+## things i learned
+
+- setting up CORS for cross-domain cookies was tricky
+- JWT with httpOnly cookies for security
+- react context for global state management
+- deploying full-stack apps with custom domains
+- DNS configuration and SSL certificates
+
+## Why micou?
+
+Because sometimes you need proof that you're actually making progress. micou gives you that proof.
+
+Small, consistent sessions add up. Every minute counts.
 
 **make it count, one day at a time** 🦁
