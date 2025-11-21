@@ -1,6 +1,9 @@
 # micou - habit tracker app
 
 **live site:** https://micou.app
+## test account in order to test the session/timer:
+e-mail: se19@test.com 
+pw: se19test
 
 a simple habit tracker i built to help fight imposter syndrome by showing concrete proof of work accomplished. tracks focused work sessions and displays stats to show you're actually making progress.
 
