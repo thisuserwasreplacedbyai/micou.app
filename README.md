@@ -5,7 +5,7 @@
 e-mail: se19@test.com 
 pw: se19test
 
-a simple habit tracker i built to help fight imposter syndrome by showing concrete proof of work accomplished. tracks focused work sessions and displays stats to show you're actually making progress.
+a simple habit tracker i built to help fight imposter syndrome by showing concrete proof of accomplished time spent working. tracks focused work sessions and displays stats to show you're actually making progress.
 
 ## what it does
 
